@@ -1,6 +1,6 @@
-# KOPDIG Organization 🏪
+# KOPDIG
 
-> **Sistem Manajemen Koperasi Siswa Digital** — multi-platform: web kasir, desktop POS, dan mobile monitoring. Dibangun di atas satu backend terpusat dengan database PostgreSQL.
+> Sistem manajemen koperasi siswa digital untuk web, desktop, dan mobile. Ketiganya berbagi satu backend dan satu database PostgreSQL.
 
 [![Web](https://img.shields.io/badge/Web-Next.js%2016-000?logo=next.js)](https://github.com/kopdig/kopdig-web)
 [![Desktop](https://img.shields.io/badge/Desktop-Electron%2044-512BD4?logo=electron)](https://github.com/kopdig/kopdig-desktop)
@@ -8,65 +8,59 @@
 [![Backend](https://img.shields.io/badge/Backend-ElysiaJS%20%2B%20Bun-green?logo=bun)](https://github.com/kopdig/kopdig-backend)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](LICENSE)
 
----
+## Ringkasan platform
 
-## 📊 Ringkasan Platform
+| Platform | Framework / Stack | Bahasa | Status | Fitur utama | Repository |
+| --- | --- | --- | --- | --- | --- |
+| Web | Next.js 16 App Router + Tailwind CSS 4 | TypeScript | Fondasi jalan | Kasir, auth, cart, design system, Docker ready | [kopdig-web](./kopdig-web) |
+| Desktop | Electron 44 + React 19 + Vite 7 | TypeScript | Scaffold | Struktur IPC aman, context isolation, API layer boundary reserved | [kopdig-desktop](./kopdig-desktop) |
+| Mobile | Flutter (default template) | Dart | Kosong | Belum ada fitur, masih skeleton starter | [kopdig-mobile](./kopdig-mobile) |
+| Backend | ElysiaJS + Bun + Supabase Postgres | TypeScript | Siap dipakai | Auth, produk, shift, transaksi, ledger, laporan, OTP, audit logs | [kopdig-backend](./kopdig-backend) |
+| E2E | Playwright + Bun | TypeScript | Jalan (web + desktop) | Smoke test Chromium/Firefox/WebKit, desktop dev+packaged | [kopdig-e2e-testing](./kopdig-e2e-testing) |
 
-| Platform   | Framework / Stack                              | Bahasa       | Status            | Fitur Utama                                                          | Repository                        |
-| ---------- | ---------------------------------------------- | ------------ | ----------------- | -------------------------------------------------------------------- | --------------------------------- |
-| 🌐 Web     | Next.js 16 App Router + Tailwind CSS 4         | TypeScript   | Fondasi jalan ✅   | Kasir, auth, cart, design system, Docker ready                       | [kopdig-web](./kopdig-web)        |
-| 🖥️ Desktop | Electron 44 + React 19 + Vite 7                | TypeScript   | Scaffold ⚙️        | Struktur IPC aman, context isolation, API layer boundary reserved      | [kopdig-desktop](./kopdig-desktop) |
-| 📱 Mobile  | Flutter (default template)                     | Dart         | Kosong 🏗️         | Belum ada fitur — hanya skeleton starter                             | [kopdig-mobile](./kopdig-mobile)  |
-| ⚙️ Backend | ElysiaJS + Bun + Supabase Postgres             | TypeScript   | Siap dipakai ✅    | Auth, produk, shift, transaksi, ledger, laporan, OTP, audit logs     | [kopdig-backend](./kopdig-backend) |
-| 🧪 E2E     | Playwright + Bun                               | TypeScript   | Web & Desktop 🟢  | Smoke test Chromium/Firefox/WebKit, desktop dev+packaged             | [kopdig-e2e-testing](./kopdig-e2e-testing) |
+## Tentang KOPDIG
 
----
+KOPDIG (Koperasi Digital) menggantikan pencatatan manual koperasi siswa. Cakupannya penjualan di kasir, manajemen stok, cicilan seragam, barang titipan, dan laporan keuangan.
 
-## 🎯 Tentang KOPDIG
+### Capaian inti
 
-**KOPDIG (Koperasi Digital)** adalah sistem manajemen koperasi siswa sekolah yang menggantikan pencatatan manual. Cakupan: penjualan langsung (kasir), manajemen stok, cicilan seragam, barang titipan, dan laporan keuangan.
-
-### Capaian Inti
-
-- **Arsitektur satu backend, tiga klien** — Web, Desktop, Mobile berbagi API Go/SupaBase yang sama
-- **Kontrol akses berbasis peran** — superadmin, admin, petugas (kasir), bendahara, kepala sekolah
-- **Transaksi real-time** — shift kas, penjualan tunai & QRIS manual, pencatatan stok
-- **Audit lengkap** — log per transaksi, koreksi stok, riwayat shift
-- **Desain sistem konsisten** — skema warna emerald, komponen shadcn/ui di web
+- Satu backend melayani tiga klien: web, desktop, dan mobile.
+- Akses diatur per peran: superadmin, admin, petugas (kasir), bendahara, dan kepala sekolah.
+- Shift kas, pembayaran tunai dan QRIS manual, serta pergerakan stok tercatat langsung.
+- Transaksi, koreksi stok, dan riwayat shift masuk ke log audit.
+- Web memakai skema warna emerald dengan komponen shadcn/ui.
 
 ### Batasan MVP
 
-| Termasuk MVP                           | Tidak termasuk MVP                   |
-| -------------------------------------- | ------------------------------------ |
-| Transaksi kasir cepat                  | Simpan-pinjam koperasi               |
-| Master produk + kategori + harga       | Integrasi payment gateway otomatis   |
-| Manajemen stok (masuk/keluar/adjust)   | Marketplace atau pembelian mandiri   |
-| Cicilan seragam + sisa tagihan         | Autentikasi biometrik                |
-| Barang titipan (konsinyasi)            | Multi-cabang / multi-koperasi        |
-| Laporan harian + stok + kas            | Notifikasi push                      |
+| Termasuk MVP | Tidak termasuk MVP |
+| --- | --- |
+| Transaksi kasir cepat | Simpan-pinjam koperasi |
+| Master produk + kategori + harga | Integrasi payment gateway otomatis |
+| Manajemen stok (masuk/keluar/adjust) | Marketplace atau pembelian mandiri |
+| Cicilan seragam + sisa tagihan | Autentikasi biometrik |
+| Barang titipan (konsinyasi) | Multi-cabang / multi-koperasi |
+| Laporan harian + stok + kas | Notifikasi push |
 
----
+## Backend
 
-## ⚙️ Backend (Source of Truth)
+Satu backend ElysiaJS + Bun + Supabase Postgres melayani ketiga klien. Struktur modulnya per fitur: `index.ts` untuk routing, validasi, dan guard; `service.ts` untuk logika bisnis; `model.ts` untuk skema Zod.
 
-Single backend **ElysiaJS + Bun + Supabase Postgres** melayani ketiga klien. Feature-based module structure: tiap fitur punya `index.ts` (routing + validasi + guard), `service.ts` (logika bisnis), `model.ts` (skema Zod).
+### Modul
 
-### Modul yang sudah berjalan
+| Modul | Fungsi |
+| --- | --- |
+| `auth` | Login pakai username, penerbitan token, pemetaan ke Supabase Auth |
+| `users` | CRUD pengguna, penetapan peran, aktif/nonaktif |
+| `products` | CRUD produk, barcode, konsinyasi, harga jual dan beli |
+| `shifts` | Buka dan tutup shift kas, satu shift aktif |
+| `transactions` | Buat transaksi, simpan snapshot harga item |
+| `ledger` | Buku kas masuk dan keluar, rekonsiliasi |
+| `reports` | Ringkasan penjualan, stok, dan shift |
+| `settings` | Konfigurasi sistem (nama toko, footer, margin) |
+| `otp` | Kode OTP sekali pakai untuk verifikasi |
+| `audit-logs` | Log append-only untuk semua operasi |
 
-| Modul       | Endpoint / Fungsi                                  | Status   |
-| ----------- | -------------------------------------------------- | -------- |
-| **auth**    | Login (username), token issuance, Supabase Auth map | ✅       |
-| **users**   | CRUD pengguna, role assignment, aktivas nonaktif   | ✅       |
-| **products**| CRUD produk, barcode, konsinyasi, harga jual/beli  | ✅       |
-| **shifts**  | Buka/tutup shift kas, one-active-shift constraint  | ✅       |
-| **transactions** | Buat transaksi, simpan item snapshot harga    | ✅       |
-| **ledger**  | Buku kas masuk/keluar, rekonsiliasi                | ✅       |
-| **reports** | Ringkasan penjualan, stok, shift                   | ✅       |
-| **settings**| Konfigurasi sistem (nama toko, footer, margin)     | ✅       |
-| **otp**     | Kode OTP satu kali untuk verifikasi                | ✅       |
-| **audit-logs** | Append-only log semua operasi                   | ✅       |
-
-### Skema Database (Supabase)
+### Skema database
 
 ```
 public.app (application schema)
@@ -84,66 +78,64 @@ public.auth (Supabase bawaan)
 └── sessions       — umur token diatur via Dashboard
 ```
 
-### CRUD Produk — Bidang Kunci
+### Kolom produk
 
-| Field           | Tipe            | Constraint                                  |
-| --------------- | --------------- | ------------------------------------------- |
-| `id`            | UUID            | Primary key                                 |
-| `barcode`       | TEXT            | UNIQUE, nullable                            |
-| `name`          | TEXT            | NOT NULL                                    |
-| `is_consignment`| BOOLEAN         | Default false                               |
-| `buy_price`     | NUMERIC(14,2)   | > 0                                       |
-| `sell_price`    | NUMERIC(14,2)   | > 0                                       |
-| `stock`         | INTEGER         | >= 0, default 5                             |
-| `min_stock`     | INTEGER         | default 5                                   |
-| `expiry_date`   | DATE            | nullable (untuk produk perishable)          |
+| Field | Tipe | Constraint |
+| --- | --- | --- |
+| `id` | UUID | Primary key |
+| `barcode` | TEXT | UNIQUE, nullable |
+| `name` | TEXT | NOT NULL |
+| `is_consignment` | BOOLEAN | Default false |
+| `buy_price` | NUMERIC(14,2) | > 0 |
+| `sell_price` | NUMERIC(14,2) | > 0 |
+| `stock` | INTEGER | >= 0, default 5 |
+| `min_stock` | INTEGER | default 5 |
+| `expiry_date` | DATE | nullable (untuk produk perishable) |
 
-**Konsinyasi check**: `margin_percent` wajib 10–15% bila `is_consignment = true`.
+Kolom `margin_percent` wajib 10 sampai 15 persen bila `is_consignment` bernilai true.
 
 ### Keamanan
 
-- **Publishable key** → akses user-scoped; semua *read* backend pakai publishable key + JWT, RLS berlaku penuh
-- **Secret key** → server-only, hanya dipakai untuk Auth Admin API, write transaksional, audit log
-- **Peran ganda**: RLS baca `app_metadata.role` di JWT; backend cek fresh dari `app.users` tiap request
-- **RLS aktif** di semua tabel + 22 policies mencerminkan matriks peran PRD
+- Semua pembacaan backend memakai publishable key bersama JWT pengguna, sehingga RLS berlaku sebagai user itu.
+- Secret key hanya dipakai di server untuk Auth Admin API, penulisan transaksional, dan audit log.
+- Policy RLS membaca `app_metadata.role` dari JWT, sedangkan backend mengecek peran terbaru dari `app.users` pada setiap request.
+- RLS aktif di semua tabel, dengan 22 policy yang mengikuti matriks peran PRD.
 
-### Kredensial Development
+### Kredensial development
 
-| Peran      | Username | Password |
-| ---------- | -------- | -------- |
-| **superadmin** | `admin123`    | `12345`   |
-| **petugas**    | `G123`      | `12345`   |
-| —              | `123`       | `12345`   |
+| Peran | Username | Password |
+| --- | --- | --- |
+| superadmin | `admin123` | `12345` |
+| petugas | `G123` | `12345` |
+| n/a | `123` | `12345` |
 
----
+## Web
 
-## 🌐 Aplikasi Web
+Halaman kasir dan admin dibangun dengan Next.js 16 App Router. Fondasi UI dan alur kasir sudah jalan, tapi API backend belum terhubung penuh (lihat [Open Decisions](kopdig-web/docs/05-decisions/open-decisions.md)).
 
-Client-side kasir & admin dengan Next.js 16 App Router. **Fondasi UI & alur kasir sudah jalan**; backend API belum terhubung penuh (lihat [Open Decisions](kopdig-web/docs/05-decisions/open-decisions.md)).
+### Fitur
 
-### Fitur Web
+- Skema warna emerald dengan warna utama `#059669`, komponen shadcn/ui, dan glassmorphism opsional.
+- Halaman kasir: cari produk lewat barcode atau nama, keranjang Zustand, hitung total, bayar tunai atau QRIS manual.
+- Alur autentikasi: login, register, lupa dan reset kata sandi. UI siap, integrasi backend belum.
+- Dashboard admin dengan sidebar yang menyesuaikan peran.
+- Build Docker multi-stage dengan runner produksi `node:24-alpine`.
+- Environment dan skema API divalidasi dengan Zod di batas modul.
 
-- **Sistem Desain Emerald** — warna utama `#059669`, komponen shadcn/ui, glassmorphism opsional
-- **Halaman Kasir** — pencarian produk via barcode/nama, keranjang Zustand, hitung total, bayar tunai/QRIS manual
-- **Auth Flow** — login, register, forgot/reset password (UI siap; backend integrasi TBD)
-- **Dashboard** — layout admin dengan sidebar navigasi berbasis role
-- **Docker Support** — multi-stage build; production runner `node:24-alpine`
-- **Validasi Zod** — env validated di import; API schemas di boundary
+### Tumpukan teknologi
 
-### Tumpukan Teknologi Web
+| Komponen | Teknologi |
+| --- | --- |
+| Framework | Next.js 16 App Router |
+| Runtime | React 19 + TypeScript 5 |
+| Gaya | Tailwind CSS 4 |
+| State | Zustand 5 (keranjang), TanStack React Query 5 (server state) |
+| Validasi | Zod 4 |
+| Animasi | Framer Motion |
+| Build | bun 1.3+ |
+| Container | Docker multi-stage |
 
-| Komponen      | Teknologi                |
-| ------------- | ------------------------ |
-| **Framework** | Next.js 16 App Router    |
-| **Runtime**   | React 19 + TypeScript 5  |
-| **Gaya**      | Tailwind CSS 4           |
-| **State**     | Zustand 5 (keranjang), TanStack React Query 5 (server state) |
-| **Validasi**  | Zod 4                    |
-| **Animasi**   | Framer Motion            |
-| **Build**     | bun 1.3+                 |
-| **Container** | Docker multi-stage       |
-
-### Jalur Lokal
+### Jalur lokal
 
 ```bash
 cd kopdig-web
@@ -152,20 +144,18 @@ bun run dev
 # → http://localhost:3000
 ```
 
-### Quality Gate
+### Quality gate
 
 ```bash
 bun run validate   # typecheck + lint + format + docs + test:coverage + build + size
 bun run audit:fast # oxlint + typecheck (cepat)
 ```
 
----
+## Desktop
 
-## 🖥️ Aplikasi Desktop
+Electron 44, React 19, Vite 7, dan Tailwind CSS 4. Tahapnya masih scaffold: isolasi proses sudah diamankan, fitur bisnis belum ada.
 
-**Electron 44 + React 19 + Vite 7 + Tailwind CSS 4**. Saat ini dalam tahap **scaffold**: struktur process isolation sudah diamankan, belum ada fitur bisnis.
-
-### Arsitektur Process
+### Arsitektur proses
 
 ```
 Electron Main Process (src/main/)
@@ -179,25 +169,25 @@ API Service Layer (src/renderer/src/services/)  ← boundary reserved, empty, be
 Backend (ElysiaJS)
 ```
 
-### Security Defaults
+### Setelan keamanan
 
 - `contextIsolation: true`
 - `nodeIntegration: false`
 - `sandbox: true`
 
-Tidak ada IPC channel yang terdaftar — tambahan channel hanya jika butuh akses desktop-native yang memang diperlukan.
+Belum ada IPC channel yang terdaftar. Channel baru hanya ditambah bila memang butuh akses desktop-native.
 
-### Tumpukan Teknologi Desktop
+### Tumpukan teknologi
 
-| Komponen       | Teknologi                     |
-| -------------- | ----------------------------- |
-| **Shell**      | Electron 44                   |
-| **Frontend**   | React 19 + TypeScript 5.9     |
-| **Build**      | electron-vite 5 + Vite 7      |
-| **Styling**    | Tailwind CSS 4                |
-| **Packager**   | bun (satu-satunya package manager) |
+| Komponen | Teknologi |
+| --- | --- |
+| Shell | Electron 44 |
+| Frontend | React 19 + TypeScript 5.9 |
+| Build | electron-vite 5 + Vite 7 |
+| Styling | Tailwind CSS 4 |
+| Packager | bun (satu-satunya package manager) |
 
-### Jalur Lokal
+### Jalur lokal
 
 ```bash
 cd kopdig-desktop
@@ -205,39 +195,35 @@ bun install
 bun run dev   # electron-vite dev
 ```
 
----
+## Mobile
 
-## 📱 Aplikasi Mobile
+Masih memakai template awal Flutter. `lib/main.dart` berisi aplikasi counter bawaan dan belum ada fitur bisnis.
 
-**Flutter starter template** — belum ada fitur bisnis. `lib/main.dart` berisi default counter app.
+### Tumpukan teknologi
 
-### Tumpukan Teknologi Mobile
+| Komponen | Teknologi |
+| --- | --- |
+| Framework | Flutter |
+| SDK | Dart ^3.11.5 |
+| Target | Android + iOS |
 
-| Komponen      | Teknologi           |
-| ------------- | ------------------- |
-| **Framework** | Flutter             |
-| **SDK**       | Dart ^3.11.5        |
-| **Target**    | Android + iOS       |
+### Langkah berikutnya
 
-### Next Step (Rencana)
+1. Hubungkan ke backend lewat REST (dio atau http).
+2. Tambahkan monitoring kasir.
+3. Tambahkan cache offline dengan Hive atau SQLite.
 
-1. Hubungkan ke backend (REST via dio/http)
-2. Implementasi fitur monitoring kasir real-time
-3. Tambah offline cache dengan Hive/SQLite
+## E2E testing
 
----
+Repo terpisah berisi smoke test Playwright untuk semua platform.
 
-## 🧪 E2E Testing
+| Service | Browser / Engine | Coverage |
+| --- | --- | --- |
+| web | Chromium / Firefox / WebKit | Matriks penuh; dev dan staging hanya Chromium |
+| desktop | Chromium (bawaan Electron) | Mode dev dan build packaged |
+| mobile | n/a | Sengaja dilewati, hanya placeholder |
 
-Monorepo Playwright terpisah — satu source of truth untuk smoke test semua platform.
-
-| Service     | Browser / Engine     | Coverage                          |
-| ----------- | -------------------- | --------------------------------- |
-| **web**     | Chromium / Firefox / WebKit | Full matrix; dev+staging Chromium-only |
-| **desktop** | Chromium (Electron bundles it) | Dev mode + packaged build |
-| **mobile**  | —                    | Di-skip by design (placeholder)   |
-
-### Jalur Lokal
+### Jalur lokal
 
 ```bash
 cd kopdig-e2e-testing
@@ -247,11 +233,9 @@ bun run doctor         # cek env vars
 bun run test:smoke     # web + desktop smoke together
 ```
 
----
+## Alur pengguna
 
-## 🔄 Alur Pengguna
-
-### Kasir (Web & Desktop)
+### Kasir (web dan desktop)
 
 ```text
 Login (username + password)
@@ -269,7 +253,7 @@ Konfirmasi + Cetak Struk
 Tutup Shift (bandingkan expected vs actual cash)
 ```
 
-### Pengelola Stok
+### Pengelola stok
 
 ```text
 Login → Role: admin/superadmin
@@ -297,7 +281,7 @@ Rekonsiliasi Cash
 Unduh Laporan Harian/Mingguan
 ```
 
-### Kepala Sekolah
+### Kepala sekolah
 
 ```text
 Login → Role: kepsek
@@ -309,66 +293,60 @@ Laporan penjualan harian
 Laporan stok kritis
 ```
 
----
+## Keamanan dan autentikasi
 
-## 🔐 Keamanan & Autentikasi
+### Matriks peran
 
-### Kontrol Akses Berbasis Peran (Matriks)
+| Peran | Kasir | Stok | Kas/Ledger | Laporan Penuh | User Mgmt |
+| --- | --- | --- | --- | --- | --- |
+| superadmin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| admin | ✅ | ✅ | ✅ | ✅ | ❌ |
+| petugas | ✅ | ❌ | ❌ | ❌ | ❌ |
+| bendahara | ❌ | ❌ | ✅ | ✅ | ❌ |
+| kepala sekolah | ❌ | ❌ | 👁️ read | 👁️ read | ❌ |
 
-| Peran           | Kasir | Stok | Kas/Ledger | Laporan Penuh | User Mgmt |
-| --------------- | ----- | ---- | ---------- | ------------- | --------- |
-| **superadmin**  | ✅    | ✅   | ✅         | ✅            | ✅        |
-| **admin**       | ✅    | ✅   | ✅         | ✅            | ❌        |
-| **petugas**     | ✅    | ❌   | ❌         | ❌            | ❌        |
-| **bendahara**   | ❌    | ❌   | ✅         | ✅            | ❌        |
-| **kepala sekolah** | ❌ | ❌   | 👁️ read  | 👁️ read       | ❌        |
+### Model auth
 
-### Model Auth
+- Kasir masuk dengan username. Backend memetakannya ke email sintetis `<username>@kopdig.local` di Supabase Auth.
+- Tidak perlu email, jadi cocok untuk sekolah tanpa infrastruktur email.
+- Umur sesi diatur di Supabase Dashboard, bukan di kode.
+- Web memakai JWT dengan refresh token; desktop dan mobile memakai bearer token.
 
-- Username login → backend memetakan ke email sintetis `<username>@kopdig.local` di Supabase Auth
-- **Tidak perlu email** — cocok untuk lingkungan sekolah tanpa infrastruktur email
-- Session duration diatur via Supabase Dashboard (bukan hardcode)
-- JWT + refresh token (web); bearer token (desktop/mobile)
+### Policy RLS
 
-### RLS Policies (Ringkasan)
+| Tabel | Read oleh | Write oleh |
+| --- | --- | --- |
+| `users` | admin/superadmin | superadmin |
+| `products` | semua role | admin/superadmin |
+| `shifts` | admin/superadmin | petugas (buka), admin (tutup) |
+| `transactions` | semua role (scoped) | petugas (buka) |
+| `ledger` | bendahara/admin/superadmin | admin/superadmin |
+| `audit_logs` | admin/superadmin | trigger (append-only) |
 
-| Tabel           | Read oleh            | Write oleh                  |
-| --------------- | -------------------- | --------------------------- |
-| `users`         | admin/superadmin     | superadmin                  |
-| `products`      | semua role           | admin/superadmin            |
-| `shifts`        | admin/superadmin     | petugas (buka), admin (tutup) |
-| `transactions`  | semua role (scoped)  | petugas (buka)              |
-| `ledger`        | bendahara/admin/superadmin | admin/superadmin       |
-| `audit_logs`    | admin/superadmin     | trigger (append-only)       |
+## Perbandingan fitur per platform
 
----
+| Fitur | Web | Desktop | Mobile |
+| --- | --- | --- | --- |
+| Kasir / input transaksi | ✅ | Scaffold | ❌ |
+| Autentikasi | ✅ | UI scaffold | ❌ |
+| Manajemen produk | ✅ | ❌ | ❌ |
+| Manajemen stok | ✅ | ❌ | ❌ |
+| Shift kas | ✅ | ❌ | ❌ |
+| Laporan | ✅ | ❌ | ❌ |
+| Docker / production | ✅ | ❌ | ❌ |
+| E2E test coverage | ✅ | ✅ | ❌ |
 
-## 📊 Perbandingan Fitur per Platform
+## Pengaturan pengembangan
 
-| Fitur                   | Web  | Desktop | Mobile |
-| ----------------------- | ---- | ------- | ------ |
-| Kasir / input transaksi | ✅   | ⚙️ (scaffold) | ❌     |
-| Autentikasi             | ✅   | ✅ (UI scaffold) | ❌     |
-| Manajemen produk        | ✅   | ❌       | ❌     |
-| Manajemen stok          | ✅   | ❌       | ❌     |
-| Shift kas               | ✅   | ❌       | ❌     |
-| Laporan                 | ✅   | ❌       | ❌     |
-| Docker / production     | ✅   | ❌       | ❌     |
-| E2E test coverage       | ✅   | ✅       | ❌     |
+### Prasyarat
 
----
+- Bun 1.3 atau lebih baru (package manager sekaligus runtime).
+- Node.js 24 atau lebih baru, hanya untuk runner container web.
+- Akun Supabase dengan project `dbccibeljdaotavnsslx` (ap-southeast-1).
+- Docker, opsional, untuk deploy web.
+- Flutter SDK, opsional, untuk mobile.
 
-## 🛠️ Pengaturan Pengembangan
-
-### Prasyarat Umum
-
-- **Bun** 1.3+ (package manager & runtime — wajib)
-- **Node.js** 24+ (hanya untuk runner container web)
-- **Supabase** account + project `dbccibeljdaotavnsslx` (ap-southeast-1)
-- **Docker** (opsional, untuk web deployment)
-- **Flutter SDK** (opsional, untuk mobile)
-
-### Variabel Lingkungan
+### Variabel lingkungan
 
 **Backend** (`.env`):
 
@@ -384,13 +362,11 @@ SUPABASE_SECRET_KEY=your-secret-key
 NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
 ```
 
----
-
-## 🗄️ Struktur Organisasi
+## Struktur repo
 
 ```
 kopdig/
-├── .github/                 ← profil org (file ini)
+├── .github/                 ← profil org
 ├── kopdig-backend/          ← ElysiaJS + Supabase (10 modul siap)
 │   ├── src/modules/         ← auth, users, products, shifts, transactions, ledger, reports, settings, otp, audit-logs
 │   └── supabase/migrations/ ← 0001_init.sql (DDL lengkap + RLS)
@@ -410,32 +386,24 @@ kopdig/
     └── src/tests/mobile/    ← skip placeholder
 ```
 
----
+## Rencana
 
-## 🚀 Rencana Masa Depan
+- [ ] Desktop: integrasi API backend, halaman kasir, manajemen produk, dan shift.
+- [ ] Mobile: monitoring shift, notifikasi kas, dan login.
+- [ ] Web: hubungkan klien mock ke API ElysiaJS yang sebenarnya.
+- [ ] E2E: tambah skenario autentikasi, alur kasir, dan CRUD admin.
+- [ ] Dukungan dua bahasa (Indonesia dan Inggris).
+- [ ] Sakelar tema gelap dan terang di semua platform.
+- [ ] E2E mobile dengan Flutter Driver atau integration test.
 
-- [ ] **Desktop fitur** — integrasi API backend, halaman kasir, manajemen produk, shift
-- [ ] **Mobile implementasi** — monitoring shift real-time, notifikasi kas, login
-- [ ] **Web backend connection** — hubungkan mock client ke ElysiaJS API sebenarnya
-- [ ] **E2E full suite** — tambah test kasus auth, kasir flow, admin CRUD
-- [ ] **Multi-bahasa (i18n)** — dukungan bahasa Indonesia + Inggris
-- [ ] **Dark mode toggle** — sakelar tema gelap/terang di semua platform
-- [ ] **Mobile e2e** — Flutter Driver atau integration test untuk mobile smoke
+## Ringkasan tech stack
 
----
-
-## 🙏 Tech Stack Ringkasan
-
-| Layer       | Teknologi                                         |
-| ----------- | ------------------------------------------------- |
-| **Backend** | ElysiaJS 1.4 + Bun + Supabase Postgres (RLS)      |
-| **Web**     | Next.js 16 + React 19 + TypeScript + Tailwind 4 + Zustand + React Query |
-| **Desktop** | Electron 44 + React 19 + TypeScript + Vite 7      |
-| **Mobile**  | Flutter (target: Android + iOS)                    |
-| **Testing** | Vitest 5 + Testing Library (web), Playwright (e2e) |
-| **DevOps**  | Docker multi-stage, GitHub Actions (CI), husky    |
-| **Lint**    | oxlint + ESLint 9 + Biome (format), Knip (dead code) |
-
----
-
-Mempercepat operasional koperasi sekolah melalui digitalisasi kasir, stok, dan laporan.
+| Layer | Teknologi |
+| --- | --- |
+| Backend | ElysiaJS 1.4 + Bun + Supabase Postgres (RLS) |
+| Web | Next.js 16 + React 19 + TypeScript + Tailwind 4 + Zustand + React Query |
+| Desktop | Electron 44 + React 19 + TypeScript + Vite 7 |
+| Mobile | Flutter (target: Android + iOS) |
+| Testing | Vitest 5 + Testing Library (web), Playwright (e2e) |
+| DevOps | Docker multi-stage, GitHub Actions (CI), husky |
+| Lint | oxlint + ESLint 9 + Biome (format), Knip (dead code) |
