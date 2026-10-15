@@ -10,13 +10,13 @@
 
 ## Ringkasan platform
 
-| Platform | Framework / Stack | Bahasa | Status | Fitur utama | Repository |
-| --- | --- | --- | --- | --- | --- |
-| Web | Next.js 16 App Router + Tailwind CSS 4 | TypeScript | Fondasi jalan | Kasir, auth, cart, design system, Docker ready | [kopdig-web](./kopdig-web) |
-| Desktop | Electron 44 + React 19 + Vite 7 | TypeScript | Scaffold | Struktur IPC aman, context isolation, API layer boundary reserved | [kopdig-desktop](./kopdig-desktop) |
-| Mobile | Flutter (default template) | Dart | Kosong | Belum ada fitur, masih skeleton starter | [kopdig-mobile](./kopdig-mobile) |
-| Backend | ElysiaJS + Bun + Supabase Postgres | TypeScript | Siap dipakai | Auth, produk, shift, transaksi, ledger, laporan, OTP, audit logs | [kopdig-backend](./kopdig-backend) |
-| E2E | Playwright + Bun | TypeScript | Jalan (web + desktop) | Smoke test Chromium/Firefox/WebKit, desktop dev+packaged | [kopdig-e2e-testing](./kopdig-e2e-testing) |
+| Platform | Framework / Stack                      | Bahasa     | Status                | Fitur utama                                                       | Repository                                                         |
+| -------- | -------------------------------------- | ---------- | --------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Web      | Next.js 16 App Router + Tailwind CSS 4 | TypeScript | Fondasi jalan         | Kasir, auth, cart, design system, Docker ready                    | [kopdig-web](https://github.com/kopdig/kopdig-web)                 |
+| Desktop  | Electron 44 + React 19 + Vite 7        | TypeScript | Scaffold              | Struktur IPC aman, context isolation, API layer boundary reserved | [kopdig-desktop](https://github.com/kopdig/kopdig-desktop)         |
+| Mobile   | Flutter (default template)             | Dart       | Kosong                | Belum ada fitur, masih skeleton starter                           | [kopdig-mobile](https://github.com/kopdig/kopdig-mobile)           |
+| Backend  | ElysiaJS + Bun + Supabase Postgres     | TypeScript | Siap dipakai          | Auth, produk, shift, transaksi, ledger, laporan, OTP, audit logs  | [kopdig-backend](https://github.com/kopdig/kopdig-backend)         |
+| E2E      | Playwright + Bun                       | TypeScript | Jalan (web + desktop) | Smoke test Chromium/Firefox/WebKit, desktop dev+packaged          | [kopdig-e2e-testing](https://github.com/kopdig/kopdig-e2e-testing) |
 
 ## Tentang KOPDIG
 
@@ -32,14 +32,14 @@ KOPDIG (Koperasi Digital) menggantikan pencatatan manual koperasi siswa. Cakupan
 
 ### Batasan MVP
 
-| Termasuk MVP | Tidak termasuk MVP |
-| --- | --- |
-| Transaksi kasir cepat | Simpan-pinjam koperasi |
-| Master produk + kategori + harga | Integrasi payment gateway otomatis |
+| Termasuk MVP                         | Tidak termasuk MVP                 |
+| ------------------------------------ | ---------------------------------- |
+| Transaksi kasir cepat                | Simpan-pinjam koperasi             |
+| Master produk + kategori + harga     | Integrasi payment gateway otomatis |
 | Manajemen stok (masuk/keluar/adjust) | Marketplace atau pembelian mandiri |
-| Cicilan seragam + sisa tagihan | Autentikasi biometrik |
-| Barang titipan (konsinyasi) | Multi-cabang / multi-koperasi |
-| Laporan harian + stok + kas | Notifikasi push |
+| Cicilan seragam + sisa tagihan       | Autentikasi biometrik              |
+| Barang titipan (konsinyasi)          | Multi-cabang / multi-koperasi      |
+| Laporan harian + stok + kas          | Notifikasi push                    |
 
 ## Backend
 
@@ -47,18 +47,18 @@ Satu backend ElysiaJS + Bun + Supabase Postgres melayani ketiga klien. Struktur 
 
 ### Modul
 
-| Modul | Fungsi |
-| --- | --- |
-| `auth` | Login pakai username, penerbitan token, pemetaan ke Supabase Auth |
-| `users` | CRUD pengguna, penetapan peran, aktif/nonaktif |
-| `products` | CRUD produk, barcode, konsinyasi, harga jual dan beli |
-| `shifts` | Buka dan tutup shift kas, satu shift aktif |
-| `transactions` | Buat transaksi, simpan snapshot harga item |
-| `ledger` | Buku kas masuk dan keluar, rekonsiliasi |
-| `reports` | Ringkasan penjualan, stok, dan shift |
-| `settings` | Konfigurasi sistem (nama toko, footer, margin) |
-| `otp` | Kode OTP sekali pakai untuk verifikasi |
-| `audit-logs` | Log append-only untuk semua operasi |
+| Modul          | Fungsi                                                            |
+| -------------- | ----------------------------------------------------------------- |
+| `auth`         | Login pakai username, penerbitan token, pemetaan ke Supabase Auth |
+| `users`        | CRUD pengguna, penetapan peran, aktif/nonaktif                    |
+| `products`     | CRUD produk, barcode, konsinyasi, harga jual dan beli             |
+| `shifts`       | Buka dan tutup shift kas, satu shift aktif                        |
+| `transactions` | Buat transaksi, simpan snapshot harga item                        |
+| `ledger`       | Buku kas masuk dan keluar, rekonsiliasi                           |
+| `reports`      | Ringkasan penjualan, stok, dan shift                              |
+| `settings`     | Konfigurasi sistem (nama toko, footer, margin)                    |
+| `otp`          | Kode OTP sekali pakai untuk verifikasi                            |
+| `audit-logs`   | Log append-only untuk semua operasi                               |
 
 ### Skema database
 
@@ -80,17 +80,17 @@ public.auth (Supabase bawaan)
 
 ### Kolom produk
 
-| Field | Tipe | Constraint |
-| --- | --- | --- |
-| `id` | UUID | Primary key |
-| `barcode` | TEXT | UNIQUE, nullable |
-| `name` | TEXT | NOT NULL |
-| `is_consignment` | BOOLEAN | Default false |
-| `buy_price` | NUMERIC(14,2) | > 0 |
-| `sell_price` | NUMERIC(14,2) | > 0 |
-| `stock` | INTEGER | >= 0, default 5 |
-| `min_stock` | INTEGER | default 5 |
-| `expiry_date` | DATE | nullable (untuk produk perishable) |
+| Field            | Tipe          | Constraint                         |
+| ---------------- | ------------- | ---------------------------------- |
+| `id`             | UUID          | Primary key                        |
+| `barcode`        | TEXT          | UNIQUE, nullable                   |
+| `name`           | TEXT          | NOT NULL                           |
+| `is_consignment` | BOOLEAN       | Default false                      |
+| `buy_price`      | NUMERIC(14,2) | > 0                                |
+| `sell_price`     | NUMERIC(14,2) | > 0                                |
+| `stock`          | INTEGER       | >= 0, default 5                    |
+| `min_stock`      | INTEGER       | default 5                          |
+| `expiry_date`    | DATE          | nullable (untuk produk perishable) |
 
 Kolom `margin_percent` wajib 10 sampai 15 persen bila `is_consignment` bernilai true.
 
@@ -103,15 +103,15 @@ Kolom `margin_percent` wajib 10 sampai 15 persen bila `is_consignment` bernilai 
 
 ### Kredensial development
 
-| Peran | Username | Password |
-| --- | --- | --- |
-| superadmin | `admin123` | `12345` |
-| petugas | `G123` | `12345` |
-| n/a | `123` | `12345` |
+| Peran      | Username   | Password |
+| ---------- | ---------- | -------- |
+| superadmin | `admin123` | `12345`  |
+| petugas    | `G123`     | `12345`  |
+| n/a        | `123`      | `12345`  |
 
 ## Web
 
-Halaman kasir dan admin dibangun dengan Next.js 16 App Router. Fondasi UI dan alur kasir sudah jalan, tapi API backend belum terhubung penuh (lihat [Open Decisions](kopdig-web/docs/05-decisions/open-decisions.md)).
+Halaman kasir dan admin dibangun dengan Next.js 16 App Router. Fondasi UI dan alur kasir sudah jalan, tapi API backend belum terhubung penuh (lihat [Open Decisions](https://github.com/kopdig/kopdig-web/blob/main/docs/05-decisions/open-decisions.md)).
 
 ### Fitur
 
@@ -124,16 +124,16 @@ Halaman kasir dan admin dibangun dengan Next.js 16 App Router. Fondasi UI dan al
 
 ### Tumpukan teknologi
 
-| Komponen | Teknologi |
-| --- | --- |
-| Framework | Next.js 16 App Router |
-| Runtime | React 19 + TypeScript 5 |
-| Gaya | Tailwind CSS 4 |
-| State | Zustand 5 (keranjang), TanStack React Query 5 (server state) |
-| Validasi | Zod 4 |
-| Animasi | Framer Motion |
-| Build | bun 1.3+ |
-| Container | Docker multi-stage |
+| Komponen  | Teknologi                                                    |
+| --------- | ------------------------------------------------------------ |
+| Framework | Next.js 16 App Router                                        |
+| Runtime   | React 19 + TypeScript 5                                      |
+| Gaya      | Tailwind CSS 4                                               |
+| State     | Zustand 5 (keranjang), TanStack React Query 5 (server state) |
+| Validasi  | Zod 4                                                        |
+| Animasi   | Framer Motion                                                |
+| Build     | bun 1.3+                                                     |
+| Container | Docker multi-stage                                           |
 
 ### Jalur lokal
 
@@ -179,12 +179,12 @@ Belum ada IPC channel yang terdaftar. Channel baru hanya ditambah bila memang bu
 
 ### Tumpukan teknologi
 
-| Komponen | Teknologi |
-| --- | --- |
-| Shell | Electron 44 |
-| Frontend | React 19 + TypeScript 5.9 |
-| Build | electron-vite 5 + Vite 7 |
-| Styling | Tailwind CSS 4 |
+| Komponen | Teknologi                          |
+| -------- | ---------------------------------- |
+| Shell    | Electron 44                        |
+| Frontend | React 19 + TypeScript 5.9          |
+| Build    | electron-vite 5 + Vite 7           |
+| Styling  | Tailwind CSS 4                     |
 | Packager | bun (satu-satunya package manager) |
 
 ### Jalur lokal
@@ -201,11 +201,11 @@ Masih memakai template awal Flutter. `lib/main.dart` berisi aplikasi counter baw
 
 ### Tumpukan teknologi
 
-| Komponen | Teknologi |
-| --- | --- |
-| Framework | Flutter |
-| SDK | Dart ^3.11.5 |
-| Target | Android + iOS |
+| Komponen  | Teknologi     |
+| --------- | ------------- |
+| Framework | Flutter       |
+| SDK       | Dart ^3.11.5  |
+| Target    | Android + iOS |
 
 ### Langkah berikutnya
 
@@ -217,11 +217,11 @@ Masih memakai template awal Flutter. `lib/main.dart` berisi aplikasi counter baw
 
 Repo terpisah berisi smoke test Playwright untuk semua platform.
 
-| Service | Browser / Engine | Coverage |
-| --- | --- | --- |
-| web | Chromium / Firefox / WebKit | Matriks penuh; dev dan staging hanya Chromium |
-| desktop | Chromium (bawaan Electron) | Mode dev dan build packaged |
-| mobile | n/a | Sengaja dilewati, hanya placeholder |
+| Service | Browser / Engine            | Coverage                                      |
+| ------- | --------------------------- | --------------------------------------------- |
+| web     | Chromium / Firefox / WebKit | Matriks penuh; dev dan staging hanya Chromium |
+| desktop | Chromium (bawaan Electron)  | Mode dev dan build packaged                   |
+| mobile  | n/a                         | Sengaja dilewati, hanya placeholder           |
 
 ### Jalur lokal
 
@@ -297,13 +297,13 @@ Laporan stok kritis
 
 ### Matriks peran
 
-| Peran | Kasir | Stok | Kas/Ledger | Laporan Penuh | User Mgmt |
-| --- | --- | --- | --- | --- | --- |
-| superadmin | ✅ | ✅ | ✅ | ✅ | ✅ |
-| admin | ✅ | ✅ | ✅ | ✅ | ❌ |
-| petugas | ✅ | ❌ | ❌ | ❌ | ❌ |
-| bendahara | ❌ | ❌ | ✅ | ✅ | ❌ |
-| kepala sekolah | ❌ | ❌ | 👁️ read | 👁️ read | ❌ |
+| Peran          | Kasir | Stok | Kas/Ledger | Laporan Penuh | User Mgmt |
+| -------------- | ----- | ---- | ---------- | ------------- | --------- |
+| superadmin     | ✅    | ✅   | ✅         | ✅            | ✅        |
+| admin          | ✅    | ✅   | ✅         | ✅            | ❌        |
+| petugas        | ✅    | ❌   | ❌         | ❌            | ❌        |
+| bendahara      | ❌    | ❌   | ✅         | ✅            | ❌        |
+| kepala sekolah | ❌    | ❌   | 👁️ read    | 👁️ read       | ❌        |
 
 ### Model auth
 
@@ -314,27 +314,27 @@ Laporan stok kritis
 
 ### Policy RLS
 
-| Tabel | Read oleh | Write oleh |
-| --- | --- | --- |
-| `users` | admin/superadmin | superadmin |
-| `products` | semua role | admin/superadmin |
-| `shifts` | admin/superadmin | petugas (buka), admin (tutup) |
-| `transactions` | semua role (scoped) | petugas (buka) |
-| `ledger` | bendahara/admin/superadmin | admin/superadmin |
-| `audit_logs` | admin/superadmin | trigger (append-only) |
+| Tabel          | Read oleh                  | Write oleh                    |
+| -------------- | -------------------------- | ----------------------------- |
+| `users`        | admin/superadmin           | superadmin                    |
+| `products`     | semua role                 | admin/superadmin              |
+| `shifts`       | admin/superadmin           | petugas (buka), admin (tutup) |
+| `transactions` | semua role (scoped)        | petugas (buka)                |
+| `ledger`       | bendahara/admin/superadmin | admin/superadmin              |
+| `audit_logs`   | admin/superadmin           | trigger (append-only)         |
 
 ## Perbandingan fitur per platform
 
-| Fitur | Web | Desktop | Mobile |
-| --- | --- | --- | --- |
-| Kasir / input transaksi | ✅ | Scaffold | ❌ |
-| Autentikasi | ✅ | UI scaffold | ❌ |
-| Manajemen produk | ✅ | ❌ | ❌ |
-| Manajemen stok | ✅ | ❌ | ❌ |
-| Shift kas | ✅ | ❌ | ❌ |
-| Laporan | ✅ | ❌ | ❌ |
-| Docker / production | ✅ | ❌ | ❌ |
-| E2E test coverage | ✅ | ✅ | ❌ |
+| Fitur                   | Web | Desktop     | Mobile |
+| ----------------------- | --- | ----------- | ------ |
+| Kasir / input transaksi | ✅  | Scaffold    | ❌     |
+| Autentikasi             | ✅  | UI scaffold | ❌     |
+| Manajemen produk        | ✅  | ❌          | ❌     |
+| Manajemen stok          | ✅  | ❌          | ❌     |
+| Shift kas               | ✅  | ❌          | ❌     |
+| Laporan                 | ✅  | ❌          | ❌     |
+| Docker / production     | ✅  | ❌          | ❌     |
+| E2E test coverage       | ✅  | ✅          | ❌     |
 
 ## Pengaturan pengembangan
 
@@ -398,12 +398,12 @@ kopdig/
 
 ## Ringkasan tech stack
 
-| Layer | Teknologi |
-| --- | --- |
-| Backend | ElysiaJS 1.4 + Bun + Supabase Postgres (RLS) |
-| Web | Next.js 16 + React 19 + TypeScript + Tailwind 4 + Zustand + React Query |
-| Desktop | Electron 44 + React 19 + TypeScript + Vite 7 |
-| Mobile | Flutter (target: Android + iOS) |
-| Testing | Vitest 5 + Testing Library (web), Playwright (e2e) |
-| DevOps | Docker multi-stage, GitHub Actions (CI), husky |
-| Lint | oxlint + ESLint 9 + Biome (format), Knip (dead code) |
+| Layer   | Teknologi                                                               |
+| ------- | ----------------------------------------------------------------------- |
+| Backend | ElysiaJS 1.4 + Bun + Supabase Postgres (RLS)                            |
+| Web     | Next.js 16 + React 19 + TypeScript + Tailwind 4 + Zustand + React Query |
+| Desktop | Electron 44 + React 19 + TypeScript + Vite 7                            |
+| Mobile  | Flutter (target: Android + iOS)                                         |
+| Testing | Vitest 5 + Testing Library (web), Playwright (e2e)                      |
+| DevOps  | Docker multi-stage, GitHub Actions (CI), husky                          |
+| Lint    | oxlint + ESLint 9 + Biome (format), Knip (dead code)                    |
